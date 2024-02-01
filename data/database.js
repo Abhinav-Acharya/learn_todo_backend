@@ -5,8 +5,8 @@ export const dbConnect = () => {
     .connect(process.env.MONGO_URI, {
       dbName: "todo_api",
     })
-    .then(() => {
-      console.log("database connected");
+    .then((c) => {
+      console.log(`Database connected with ${c.connection.host}`);
     })
     .catch((err) => {
       console.log(err);
