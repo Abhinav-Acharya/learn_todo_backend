@@ -1,0 +1,67 @@
+router.get("/userid/special", special); //if placed above router.get("/userid/:id") then no error but if placed below then error since no data in database with id=special. so usually dynamic routes kept at end.
+
+//dynamic route
+router.get("/userid/:id", findUser);
+
+router.put("/userid/:id", updateUser);
+
+router.delete("/userid/:id", deleteUser);
+
+//another way for multiple methods on same route
+router.route("/userid/:id").get(findUser).put(updateUser).delete(deleteUser);
+
+export const special = (req, res) => {
+  res.json({
+    success: true,
+    message: "I am a joking",
+  });
+};
+
+export const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  res.json({
+    message: "User updated",
+  });
+};
+
+
+export const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  res.json({
+    message: "User deleted",
+  });
+};
+
+export const createUser = async (req, res) => {
+  const { name, email, password } = req.body;
+  const users = await User.create({
+    name,
+    email,
+    password,
+  });
+
+  res.status(201).cookie("temp", "created").json({
+    success: true,
+    message: "User registered successfully",
+  });
+};
+
+export const findUser = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  res.json({
+    message: "user found",
+    user,
+  });
+};
+
+export const getAllUsers = async (req, res) => {
+  const users = await User.find({});
+
+  res.json({
+    success: true,
+    users,
+  });
+};
