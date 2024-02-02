@@ -2,7 +2,7 @@ import { User } from "../models/user.js";
 import bcrypt from "bcrypt";
 import ErrorHandler, { setCookie } from "../utils/features.js";
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
